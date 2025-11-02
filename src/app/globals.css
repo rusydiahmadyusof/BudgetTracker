@@ -1,0 +1,141 @@
+/**
+ * Global Styles - Enterprise SaaS Design
+ * 
+ * Purpose: Import TailwindCSS directives and enterprise-grade global styles
+ * 
+ * Free Tools Used:
+ * - TailwindCSS: Free, open-source CSS framework
+ * - Google Fonts (Inter): Free to use, no license required
+ * 
+ * Enterprise Design Features:
+ * - Professional typography
+ * - Sophisticated color scheme
+ * - Refined spacing and layout
+ * - Subtle animations
+ * - Custom scrollbars
+ */
+
+/* Import Inter font from Google Fonts (free) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* TailwindCSS directives - all free utilities */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base styles - Enterprise SaaS styling */
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+  
+  body {
+    @apply bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 antialiased transition-colors duration-200;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Professional heading styles */
+  h1 {
+    @apply text-3xl font-bold text-gray-900 dark:text-gray-100 tracking-tight;
+  }
+
+  h2 {
+    @apply text-2xl font-semibold text-gray-900 dark:text-gray-100 tracking-tight;
+  }
+
+  h3 {
+    @apply text-xl font-semibold text-gray-900 dark:text-gray-100;
+  }
+
+  h4 {
+    @apply text-lg font-semibold text-gray-900 dark:text-gray-100;
+  }
+}
+
+/* Component styles - Enterprise design patterns */
+@layer components {
+  /* Professional card styling */
+  .card {
+    @apply bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200;
+  }
+
+  /* Enterprise button base */
+  .btn-base {
+    @apply inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  /* Professional input styling */
+  .input-base {
+    @apply w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-primary-600 transition-colors duration-200;
+  }
+}
+
+/* Custom utility classes - Enterprise enhancements */
+@layer utilities {
+  /* Custom scrollbar - professional styling */
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-track {
+    @apply bg-gray-100 rounded-full;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 rounded-full;
+    transition: background-color 0.2s;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-400;
+  }
+
+  /* Professional gradient backgrounds - Finance-Trust Theme */
+  .gradient-primary {
+    background: linear-gradient(135deg, #1E3A8A 0%, #1D4ED8 100%);
+  }
+
+  .gradient-success {
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  }
+
+  /* Smooth transitions */
+  .transition-smooth {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Page transition animations */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .page-enter {
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  .page-enter-sidebar {
+    animation: slideIn 0.3s ease-out;
+  }
+}
+
