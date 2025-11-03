@@ -30,6 +30,7 @@
 'use client'
 
 import { useDebounce } from '../../hooks/useDebounce'
+import { startOfWeek, startOfMonth, endOfMonth, subDays, subMonths, format } from 'date-fns'
 import Input from '../ui/Input'
 import { TRANSACTION_TYPES } from '../../utils/constants'
 
@@ -59,11 +60,85 @@ const FilterBar = ({
   // This improves performance by reducing filter operations
   const debouncedSearchTerm = useDebounce(searchTerm, 300)
 
-  // Update parent when debounced term changes
-  // This is handled by parent component using the debounced value
+  // Date preset handlers
+  const applyDatePreset = (preset) => {
+    const today = new Date()
+    let fromDate = ''
+    let toDate = format(today, 'yyyy-MM-dd')
+
+    switch (preset) {
+      case 'today':
+        fromDate = format(today, 'yyyy-MM-dd')
+        break
+      case 'thisWeek':
+        fromDate = format(startOfWeek(today, { weekStartsOn: 1 }), 'yyyy-MM-dd')
+        break
+      case 'thisMonth':
+        fromDate = format(startOfMonth(today), 'yyyy-MM-dd')
+        break
+      case 'last7Days':
+        fromDate = format(subDays(today, 7), 'yyyy-MM-dd')
+        break
+      case 'last30Days':
+        fromDate = format(subDays(today, 30), 'yyyy-MM-dd')
+        break
+      case 'lastMonth':
+        const lastMonthStart = startOfMonth(subMonths(today, 1))
+        const lastMonthEnd = endOfMonth(subMonths(today, 1))
+        fromDate = format(lastMonthStart, 'yyyy-MM-dd')
+        toDate = format(lastMonthEnd, 'yyyy-MM-dd')
+        break
+      default:
+        return
+    }
+
+    onDateFromChange(fromDate)
+    onDateToChange(toDate)
+  }
 
   return (
     <div className="bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 p-4 mb-6">
+      {/* Date Presets */}
+      <div className="mb-4 flex flex-wrap gap-2">
+        <span className="text-sm font-medium text-gray-700 dark:text-gray-300 self-center mr-2">Quick Filters:</span>
+        <button
+          onClick={() => applyDatePreset('today')}
+          className="px-3 py-1 text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+        >
+          Today
+        </button>
+        <button
+          onClick={() => applyDatePreset('thisWeek')}
+          className="px-3 py-1 text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+        >
+          This Week
+        </button>
+        <button
+          onClick={() => applyDatePreset('thisMonth')}
+          className="px-3 py-1 text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+        >
+          This Month
+        </button>
+        <button
+          onClick={() => applyDatePreset('last7Days')}
+          className="px-3 py-1 text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+        >
+          Last 7 Days
+        </button>
+        <button
+          onClick={() => applyDatePreset('last30Days')}
+          className="px-3 py-1 text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+        >
+          Last 30 Days
+        </button>
+        <button
+          onClick={() => applyDatePreset('lastMonth')}
+          className="px-3 py-1 text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+        >
+          Last Month
+        </button>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Search Input */}
         <div>

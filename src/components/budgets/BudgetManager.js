@@ -24,6 +24,8 @@
 import { useState, useMemo } from 'react'
 import { useBudget } from '../../context/BudgetContext'
 import { useTransactions } from '../../hooks/useTransactions'
+import { useToast } from '../ui/Toast'
+import { confirmDialog } from '../ui/ConfirmDialog'
 import { calculateCategorySpending } from '../../utils/calculations'
 import BudgetCard from './BudgetCard'
 import BudgetForm from './BudgetForm'
@@ -43,6 +45,7 @@ import { getPeriodStart, getPeriodEnd } from '../../utils/formatters'
 const BudgetManager = () => {
   const { budgets, setBudget, deleteBudget, categories } = useBudget()
   const { transactions } = useTransactions()
+  const { showToast } = useToast()
 
   // Form state
   const [isFormOpen, setIsFormOpen] = useState(false)
@@ -87,13 +90,33 @@ const BudgetManager = () => {
 
   // Handle save (add or update)
   const handleSave = async (budgetData) => {
-    setBudget(budgetData)
+    try {
+      setBudget(budgetData)
+      if (editingBudget) {
+        showToast('Budget updated successfully', 'success', { title: 'Success' })
+      } else {
+        showToast('Budget created successfully', 'success', { title: 'Success' })
+      }
+    } catch (error) {
+      showToast(error.message || 'Failed to save budget', 'error', { title: 'Error' })
+    }
   }
 
   // Handle delete
-  const handleDelete = (budgetId) => {
-    if (window.confirm('Are you sure you want to delete this budget?')) {
-      deleteBudget(budgetId)
+  const handleDelete = async (budgetId) => {
+    const confirmed = await confirmDialog(
+      'Delete Budget',
+      'Are you sure you want to delete this budget? This action cannot be undone.',
+      { confirmLabel: 'Delete', cancelLabel: 'Cancel', variant: 'danger' }
+    )
+
+    if (confirmed) {
+      try {
+        deleteBudget(budgetId)
+        showToast('Budget deleted successfully', 'success', { title: 'Success' })
+      } catch (error) {
+        showToast(error.message || 'Failed to delete budget', 'error', { title: 'Error' })
+      }
     }
   }
 

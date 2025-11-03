@@ -26,9 +26,12 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useBudget } from '../../context/BudgetContext'
+import { useToast } from '../ui/Toast'
 import Modal from '../ui/Modal'
 import Input from '../ui/Input'
 import Button from '../ui/Button'
+import ErrorMessage from '../shared/ErrorMessage'
 import { TRANSACTION_TYPES } from '../../utils/constants'
 import { formatDateForInput } from '../../utils/formatters'
 
@@ -119,8 +122,11 @@ const TransactionForm = ({
 
       // Close modal on success
       onClose()
+      // Toast notification will be shown by parent component
     } catch (err) {
-      setError(err.message || 'Failed to save transaction. Please try again.')
+      const errorMessage = err.message || 'Failed to save transaction. Please try again.'
+      setError(errorMessage)
+      showToast(errorMessage, 'error', { title: 'Error' })
     } finally {
       setIsSubmitting(false)
     }

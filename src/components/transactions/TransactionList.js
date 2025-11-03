@@ -23,12 +23,13 @@
 import { useState, useMemo } from 'react'
 import { useTransactions } from '../../hooks/useTransactions'
 import { useBudget } from '../../context/BudgetContext'
+import { useToast } from '../ui/Toast'
+import { confirmDialog } from '../ui/ConfirmDialog'
 import TransactionItem from './TransactionItem'
 import TransactionForm from './TransactionForm'
 import FilterBar from './FilterBar'
 import EmptyState from '../shared/EmptyState'
 import { Receipt } from 'lucide-react'
-import { TRANSACTION_TYPES } from '../../utils/constants'
 import { parseISO, isWithinInterval } from 'date-fns'
 
 /**
@@ -45,6 +46,7 @@ const TransactionList = () => {
   const { transactions, addTransaction, updateTransaction, deleteTransaction } =
     useTransactions()
   const { categories } = useBudget()
+  const { showToast } = useToast()
 
   // Filter state
   const [searchTerm, setSearchTerm] = useState('')
@@ -139,20 +141,36 @@ const TransactionList = () => {
 
   // Handle save (add or update)
   const handleSave = async (transactionData) => {
-    if (editingTransaction) {
-      // Update existing transaction
-      updateTransaction(editingTransaction.id, transactionData)
-    } else {
-      // Add new transaction
-      addTransaction(transactionData)
+    try {
+      if (editingTransaction) {
+        // Update existing transaction
+        updateTransaction(editingTransaction.id, transactionData)
+        showToast('Transaction updated successfully', 'success', { title: 'Success' })
+      } else {
+        // Add new transaction
+        addTransaction(transactionData)
+        showToast('Transaction added successfully', 'success', { title: 'Success' })
+      }
+    } catch (error) {
+      showToast(error.message || 'Failed to save transaction', 'error', { title: 'Error' })
     }
   }
 
   // Handle delete
-  const handleDelete = (transactionId) => {
-    // Confirm before deleting
-    if (window.confirm('Are you sure you want to delete this transaction?')) {
-      deleteTransaction(transactionId)
+  const handleDelete = async (transactionId) => {
+    const confirmed = await confirmDialog(
+      'Delete Transaction',
+      'Are you sure you want to delete this transaction? This action cannot be undone.',
+      { confirmLabel: 'Delete', cancelLabel: 'Cancel', variant: 'danger' }
+    )
+
+    if (confirmed) {
+      try {
+        deleteTransaction(transactionId)
+        showToast('Transaction deleted successfully', 'success', { title: 'Success' })
+      } catch (error) {
+        showToast(error.message || 'Failed to delete transaction', 'error', { title: 'Error' })
+      }
     }
   }
 

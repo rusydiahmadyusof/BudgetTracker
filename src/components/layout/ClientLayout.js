@@ -25,6 +25,9 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { BudgetProvider } from '../../context/BudgetContext'
 import { ThemeProvider } from '../../context/ThemeContext'
+import { ToastProvider } from '../ui/Toast'
+import ConfirmDialog from '../ui/ConfirmDialog'
+import ErrorBoundary from '../shared/ErrorBoundary'
 import Header from './Header'
 import Sidebar from './Sidebar'
 import BottomNav from './BottomNav'
@@ -51,24 +54,29 @@ const ClientLayout = ({ children }) => {
   }, [pathname, children])
 
   return (
-    <ThemeProvider>
-      <BudgetProvider>
-        <Header />
-        <Sidebar />
-        <main className="lg:pl-64 pb-16 lg:pb-0 min-h-screen bg-gray-50 dark:bg-gray-800 transition-colors duration-200">
-          <div
-            className={`transition-all duration-300 ease-in-out ${
-              isTransitioning 
-                ? 'opacity-0 translate-y-2' 
-                : 'opacity-100 translate-y-0'
-            }`}
-          >
-            {displayChildren}
-          </div>
-        </main>
-        <BottomNav />
-      </BudgetProvider>
-    </ThemeProvider>
+    <ErrorBoundary>
+      <ThemeProvider>
+        <ToastProvider>
+          <BudgetProvider>
+            <Header />
+            <Sidebar />
+            <main className="lg:pl-64 pb-16 lg:pb-0 min-h-screen bg-gray-50 dark:bg-gray-800 transition-colors duration-200">
+              <div
+                className={`transition-all duration-300 ease-in-out ${
+                  isTransitioning 
+                    ? 'opacity-0 translate-y-2' 
+                    : 'opacity-100 translate-y-0'
+                }`}
+              >
+                {displayChildren}
+              </div>
+            </main>
+            <BottomNav />
+            <ConfirmDialog />
+          </BudgetProvider>
+        </ToastProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
   )
 }
 

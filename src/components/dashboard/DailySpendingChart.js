@@ -131,6 +131,7 @@ const SpendingChart = () => {
         periodFormatted,
         amount: 0,
       }
+
     }
     
     // Add transaction amount to period total
@@ -286,4 +287,5 @@ const SpendingChart = () => {
 }
 
 export default SpendingChart
+
 

@@ -36,6 +36,7 @@ import { cn } from '../../lib/utils'
  * @param {string} props.title - Modal title
  * @param {React.ReactNode} props.children - Modal content
  * @param {string} props.className - Additional CSS classes
+ * @param {string} props.size - Modal size: 'sm', 'md', 'lg', 'xl'
  */
 const Modal = ({
   isOpen,
@@ -43,7 +44,14 @@ const Modal = ({
   title,
   children,
   className,
+  size = 'md',
 }) => {
+  const sizeClasses = {
+    sm: 'max-w-sm',
+    md: 'max-w-lg',
+    lg: 'max-w-2xl',
+    xl: 'max-w-4xl',
+  }
   // Ref for the modal content div (for focus trap)
   const modalRef = useRef(null)
 
@@ -117,7 +125,8 @@ const Modal = ({
       <div
         ref={modalRef}
         className={cn(
-          'relative bg-white dark:bg-gray-700 rounded-xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto border border-gray-200/80 dark:border-gray-600/80',
+          'relative bg-white dark:bg-gray-700 rounded-xl shadow-2xl w-full max-h-[90vh] overflow-y-auto border border-gray-200/80 dark:border-gray-600/80',
+          sizeClasses[size] || sizeClasses.md,
           className
         )}
         tabIndex={-1}

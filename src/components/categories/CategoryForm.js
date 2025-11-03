@@ -25,9 +25,11 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useToast } from '../ui/Toast'
 import Modal from '../ui/Modal'
 import Input from '../ui/Input'
 import Button from '../ui/Button'
+import ErrorMessage from '../shared/ErrorMessage'
 import { CATEGORY_COLORS } from '../../utils/constants'
 import * as LucideIcons from 'lucide-react'
 
@@ -63,6 +65,7 @@ const CategoryForm = ({
   category = null,
   onSave,
 }) => {
+  const { showToast } = useToast()
   const [name, setName] = useState('')
   const [color, setColor] = useState(CATEGORY_COLORS[0])
   const [icon, setIcon] = useState('Tag')
@@ -110,8 +113,11 @@ const CategoryForm = ({
 
       await onSave(categoryData)
       onClose()
+      // Toast notification will be shown by parent component
     } catch (err) {
-      setError(err.message || 'Failed to save category. Please try again.')
+      const errorMessage = err.message || 'Failed to save category. Please try again.'
+      setError(errorMessage)
+      showToast(errorMessage, 'error', { title: 'Error' })
     } finally {
       setIsSubmitting(false)
     }

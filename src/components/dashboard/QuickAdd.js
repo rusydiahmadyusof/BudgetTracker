@@ -22,6 +22,7 @@
 import { useState } from 'react'
 import { useTransactions } from '../../hooks/useTransactions'
 import { useBudget } from '../../context/BudgetContext'
+import { useToast } from '../ui/Toast'
 import Input from '../ui/Input'
 import Button from '../ui/Button'
 import { TRANSACTION_TYPES } from '../../utils/constants'
@@ -41,6 +42,7 @@ const QuickAdd = () => {
   // Get transactions and categories from context
   const { addTransaction } = useTransactions()
   const { categories } = useBudget()
+  const { showToast } = useToast()
 
   // Form state
   const [amount, setAmount] = useState('')
@@ -90,8 +92,13 @@ const QuickAdd = () => {
       setCategoryId('')
       setDate(formatDateForInput(new Date()))
       setError('')
+      
+      // Show success toast
+      showToast('Transaction added successfully', 'success', { title: 'Success' })
     } catch (err) {
-      setError('Failed to add transaction. Please try again.')
+      const errorMessage = err.message || 'Failed to add transaction. Please try again.'
+      setError(errorMessage)
+      showToast(errorMessage, 'error', { title: 'Error' })
     } finally {
       setIsSubmitting(false)
     }

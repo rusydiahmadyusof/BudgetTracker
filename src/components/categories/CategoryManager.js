@@ -22,6 +22,8 @@
 import { useState, useMemo } from 'react'
 import { useCategories } from '../../hooks/useCategories'
 import { useTransactions } from '../../hooks/useTransactions'
+import { useToast } from '../ui/Toast'
+import { confirmDialog } from '../ui/ConfirmDialog'
 import CategoryCard from './CategoryCard'
 import CategoryForm from './CategoryForm'
 import EmptyState from '../shared/EmptyState'
@@ -41,6 +43,7 @@ const CategoryManager = () => {
   const { categories, addCategory, updateCategory, deleteCategory } =
     useCategories()
   const { transactions } = useTransactions()
+  const { showToast } = useToast()
 
   // Form state
   const [isFormOpen, setIsFormOpen] = useState(false)
@@ -76,32 +79,47 @@ const CategoryManager = () => {
 
   // Handle save (add or update)
   const handleSave = async (categoryData) => {
-    if (editingCategory) {
-      // Update existing category
-      updateCategory(editingCategory.id, categoryData)
-    } else {
-      // Add new category
-      addCategory(categoryData)
+    try {
+      if (editingCategory) {
+        // Update existing category
+        updateCategory(editingCategory.id, categoryData)
+        showToast('Category updated successfully', 'success', { title: 'Success' })
+      } else {
+        // Add new category
+        addCategory(categoryData)
+        showToast('Category created successfully', 'success', { title: 'Success' })
+      }
+    } catch (error) {
+      showToast(error.message || 'Failed to save category', 'error', { title: 'Error' })
     }
   }
 
   // Handle delete
-  const handleDelete = (categoryId) => {
+  const handleDelete = async (categoryId) => {
     const transactionCount = categoryTransactionCounts[categoryId] || 0
 
     if (transactionCount > 0) {
-      alert(
-        `Cannot delete category. It has ${transactionCount} ${transactionCount === 1 ? 'transaction' : 'transactions'}.`
+      showToast(
+        `Cannot delete category. It has ${transactionCount} ${transactionCount === 1 ? 'transaction' : 'transactions'}.`,
+        'error',
+        { title: 'Cannot Delete' }
       )
       return
     }
 
     // Confirm before deleting
-    if (window.confirm('Are you sure you want to delete this category?')) {
+    const confirmed = await confirmDialog(
+      'Delete Category',
+      'Are you sure you want to delete this category? This action cannot be undone.',
+      { confirmLabel: 'Delete', cancelLabel: 'Cancel', variant: 'danger' }
+    )
+
+    if (confirmed) {
       try {
         deleteCategory(categoryId)
+        showToast('Category deleted successfully', 'success', { title: 'Success' })
       } catch (error) {
-        alert(error.message || 'Failed to delete category')
+        showToast(error.message || 'Failed to delete category', 'error', { title: 'Error' })
       }
     }
   }

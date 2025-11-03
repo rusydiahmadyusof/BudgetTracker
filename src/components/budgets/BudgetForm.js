@@ -26,9 +26,11 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useToast } from '../ui/Toast'
 import Modal from '../ui/Modal'
 import Input from '../ui/Input'
 import Button from '../ui/Button'
+import ErrorMessage from '../shared/ErrorMessage'
 import { BUDGET_PERIODS } from '../../utils/constants'
 
 /**
@@ -46,6 +48,7 @@ const BudgetForm = ({
   onSave,
   categories,
 }) => {
+  const { showToast } = useToast()
   const [categoryId, setCategoryId] = useState('')
   const [amount, setAmount] = useState('')
   const [period, setPeriod] = useState(BUDGET_PERIODS.MONTHLY)
@@ -98,8 +101,11 @@ const BudgetForm = ({
 
       await onSave(budgetData)
       onClose()
+      // Toast notification will be shown by parent component
     } catch (err) {
-      setError(err.message || 'Failed to save budget. Please try again.')
+      const errorMessage = err.message || 'Failed to save budget. Please try again.'
+      setError(errorMessage)
+      showToast(errorMessage, 'error', { title: 'Error' })
     } finally {
       setIsSubmitting(false)
     }
