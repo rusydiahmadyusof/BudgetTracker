@@ -97,10 +97,10 @@ const FilterBar = ({
   }
 
   return (
-    <div className="bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 p-4 mb-6">
+    <div className="bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 p-3 sm:p-4 mb-4 sm:mb-6">
       {/* Date Presets */}
-      <div className="mb-4 flex flex-wrap gap-2">
-        <span className="text-sm font-medium text-gray-700 dark:text-gray-300 self-center mr-2">Quick Filters:</span>
+      <div className="mb-3 sm:mb-4 flex flex-wrap gap-2">
+        <span className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 self-center mr-2">Quick Filters:</span>
         <button
           onClick={() => applyDatePreset('today')}
           className="px-3 py-1 text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
@@ -139,7 +139,7 @@ const FilterBar = ({
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {/* Search Input */}
         <div>
           <Input
@@ -192,9 +192,9 @@ const FilterBar = ({
       </div>
 
       {/* Date Range - To (second row) */}
-      <div className="mt-4">
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-600">To:</span>
+      <div className="mt-3 sm:mt-4">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+          <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 sm:min-w-[2rem]">To:</span>
           <Input
             type="date"
             value={dateTo}
@@ -211,7 +211,7 @@ const FilterBar = ({
                 onDateFromChange('')
                 onDateToChange('')
               }}
-              className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              className="px-3 sm:px-4 py-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors touch-manipulation"
             >
               Clear
             </button>

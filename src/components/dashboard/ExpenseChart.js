@@ -55,8 +55,8 @@ const ExpenseChart = () => {
   // If no expenses, show empty state
   if (breakdown.length === 0) {
     return (
-      <div className="bg-white dark:bg-gray-700 rounded-xl border border-gray-200/80 dark:border-gray-600/80 shadow-sm p-6">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+      <div className="bg-white dark:bg-gray-700 rounded-xl border border-gray-200/80 dark:border-gray-600/80 shadow-sm p-4 sm:p-6">
+        <h2 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
           Expense Breakdown
         </h2>
         <div className="flex items-center justify-center h-64 text-gray-500 dark:text-gray-400">
@@ -97,8 +97,8 @@ const ExpenseChart = () => {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-700 rounded-xl border border-gray-200/80 dark:border-gray-600/80 shadow-sm p-6">
-      <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-6">
+    <div className="bg-white dark:bg-gray-700 rounded-xl border border-gray-200/80 dark:border-gray-600/80 shadow-sm p-4 sm:p-6">
+      <h2 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 sm:mb-6">
         Expense Breakdown
       </h2>
 

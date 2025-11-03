@@ -60,13 +60,13 @@ const ClientLayout = ({ children }) => {
           <BudgetProvider>
             <Header />
             <Sidebar />
-            <main className="lg:pl-64 pb-16 lg:pb-0 min-h-screen bg-gray-50 dark:bg-gray-800 transition-colors duration-200">
+            <main className="lg:pl-64 pb-20 sm:pb-16 lg:pb-0 min-h-screen bg-gray-50 dark:bg-gray-800 transition-colors duration-200">
               <div
-                className={`transition-all duration-300 ease-in-out ${
+                className={"${
                   isTransitioning 
                     ? 'opacity-0 translate-y-2' 
                     : 'opacity-100 translate-y-0'
-                }`}
+                }}
               >
                 {displayChildren}
               </div>
@@ -76,7 +76,7 @@ const ClientLayout = ({ children }) => {
           </BudgetProvider>
         </ToastProvider>
       </ThemeProvider>
-    </ErrorBoundary>
+    </ErrorBoundary> 320bbc77a613ef28eb12af759181bd1250b78d3a
   )
 }
 

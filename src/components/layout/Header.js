@@ -69,64 +69,64 @@ const Header = () => {
   return (
     <>
       <header className="bg-white dark:bg-gray-800 border-b border-gray-200/80 dark:border-gray-700/80 sticky top-0 z-50 backdrop-blur-sm bg-white/95 dark:bg-gray-800/95 transition-colors duration-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
+          <div className="flex items-center justify-between h-14 sm:h-16">
             {/* Logo and Title - Enterprise styling */}
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-2 sm:space-x-3">
               <div className="flex-shrink-0">
-                <div className="p-2 bg-gradient-to-br from-primary-800 to-primary-700 dark:from-primary-dark dark:to-primary-dark rounded-lg shadow-sm">
-                  <Wallet className="h-5 w-5 text-white" aria-hidden="true" />
+                <div className="p-1.5 sm:p-2 bg-gradient-to-br from-primary-800 to-primary-700 dark:from-primary-dark dark:to-primary-dark rounded-lg shadow-sm">
+                  <Wallet className="h-4 w-4 sm:h-5 sm:w-5 text-white" aria-hidden="true" />
                 </div>
               </div>
               <div>
-                <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-100 tracking-tight">Budget Tracker</h1>
-                <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">Enterprise Finance Management</p>
+                <h1 className="text-sm sm:text-lg font-semibold text-gray-900 dark:text-gray-100 tracking-tight">Budget Tracker</h1>
+                <p className="hidden sm:block text-xs text-gray-500 dark:text-gray-400 font-medium">Enterprise Finance Management</p>
               </div>
             </div>
 
             {/* Right side - Actions */}
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 sm:space-x-4">
               {/* Search Button */}
               <button
                 onClick={() => setIsSearchOpen(true)}
-                className="p-2 rounded-lg text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200"
+                className="p-1.5 sm:p-2 rounded-lg text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200 touch-manipulation"
                 aria-label="Search"
                 title="Search (Ctrl+K)"
               >
-                <Search className="h-5 w-5" aria-hidden="true" />
+                <Search className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
               </button>
 
               {/* Export Button */}
               <button
                 onClick={() => setIsExportOpen(true)}
-                className="p-2 rounded-lg text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200"
+                className="p-1.5 sm:p-2 rounded-lg text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200 touch-manipulation"
                 aria-label="Export Data"
                 title="Export Data"
               >
-                <Download className="h-5 w-5" aria-hidden="true" />
+                <Download className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
               </button>
 
               {/* Import Button */}
               <button
                 onClick={() => setIsImportOpen(true)}
-                className="p-2 rounded-lg text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200"
+                className="p-1.5 sm:p-2 rounded-lg text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200 touch-manipulation"
                 aria-label="Import Data"
                 title="Import Data"
               >
-                <Upload className="h-5 w-5" aria-hidden="true" />
+                <Upload className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
               </button>
 
               {/* Theme Toggle */}
               <button
                 onClick={toggleTheme}
-                className="p-2 rounded-lg text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200"
+                className="p-1.5 sm:p-2 rounded-lg text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200 touch-manipulation"
                 aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
                 title={`Switch to ${isDark ? 'light' : 'dark'} mode`}
               >
                 {isDark ? (
-                  <Sun className="h-5 w-5" aria-hidden="true" />
+                  <Sun className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
                 ) : (
-                  <Moon className="h-5 w-5" aria-hidden="true" />
+                  <Moon className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
                 )}
               </button>
             </div>
@@ -153,4 +153,3 @@ const Header = () => {
 }
 
 export default Header
-
