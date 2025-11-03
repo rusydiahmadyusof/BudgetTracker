@@ -57,18 +57,18 @@ const SummaryCard = ({
   return (
     <div
       className={cn(
-        'p-6 rounded-xl border border-gray-200/80 dark:border-gray-600/80 bg-white dark:bg-gray-700 shadow-sm hover:shadow-md transition-all duration-200',
+        'p-4 sm:p-6 rounded-xl border border-gray-200/80 dark:border-gray-600/80 bg-white dark:bg-gray-700 shadow-sm hover:shadow-md transition-all duration-200',
         className
       )}
     >
       <div className="flex items-center justify-between">
-        <div className="flex-1">
+        <div className="flex-1 min-w-0">
           {/* Title */}
-          <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">{title}</p>
+          <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400 mb-1 sm:mb-2">{title}</p>
 
           {/* Amount - formatted as currency */}
           <p className={cn(
-            'text-3xl font-bold tracking-tight',
+            'text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight break-words',
             variant === 'success' && 'text-success-500',
             variant === 'error' && 'text-error-400',
             variant === 'default' && 'text-primary-800'
@@ -78,17 +78,17 @@ const SummaryCard = ({
 
           {/* Trend indicator (if provided) */}
           {trend && (
-            <p className="text-xs font-medium text-gray-500 mt-2">{trend}</p>
+            <p className="text-xs font-medium text-gray-500 mt-1 sm:mt-2">{trend}</p>
           )}
         </div>
 
         {/* Icon - Enterprise styling */}
         {Icon && (
           <div className={cn(
-            'ml-4 p-3 rounded-lg',
+            'ml-2 sm:ml-4 p-2 sm:p-3 rounded-lg flex-shrink-0',
             iconVariants[variant] || iconVariants.default
           )}>
-            <Icon className="h-6 w-6" aria-hidden="true" />
+            <Icon className="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />
           </div>
         )}
       </div>
@@ -97,4 +97,3 @@ const SummaryCard = ({
 }
 
 export default SummaryCard
-

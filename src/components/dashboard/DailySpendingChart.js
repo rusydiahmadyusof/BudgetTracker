@@ -196,13 +196,13 @@ const SpendingChart = () => {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-700 rounded-xl border border-gray-200/80 dark:border-gray-600/80 shadow-sm p-6">
-      <div className="mb-6 flex items-center justify-between">
+    <div className="bg-white dark:bg-gray-700 rounded-xl border border-gray-200/80 dark:border-gray-600/80 shadow-sm p-4 sm:p-6">
+      <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
         <div>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">
+          <h2 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2 sm:mb-3">
             Spending Trend ({periods} {periodLabel})
           </h2>
-          <div className="flex items-center gap-6 text-sm">
+          <div className="flex items-center gap-3 sm:gap-6 text-sm">
             <div>
               <span className="font-medium text-gray-600 dark:text-gray-400">Total: </span>
               <span className="text-error-400 dark:text-error-400 font-bold">

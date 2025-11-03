@@ -105,8 +105,8 @@ const QuickAdd = () => {
       : []
 
   return (
-    <div className="bg-white dark:bg-gray-700 rounded-xl border border-gray-200/80 dark:border-gray-600/80 shadow-sm p-6">
-      <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-6">
+    <div className="bg-white dark:bg-gray-700 rounded-xl border border-gray-200/80 dark:border-gray-600/80 shadow-sm p-4 sm:p-6">
+      <h2 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 sm:mb-6">
         Quick Add Transaction
       </h2>
 

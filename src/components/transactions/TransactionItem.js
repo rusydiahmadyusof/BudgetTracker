@@ -41,20 +41,20 @@ const TransactionItem = ({ transaction, category, onEdit, onDelete }) => {
   const isIncome = transaction.type === 'income'
 
   return (
-    <div className="px-6 py-4 border-b border-gray-200/80 dark:border-gray-600/80 hover:bg-gray-50/50 dark:hover:bg-gray-600/50 transition-colors duration-150 group">
+    <div className="px-3 sm:px-4 lg:px-6 py-3 sm:py-4 border-b border-gray-200/80 dark:border-gray-600/80 hover:bg-gray-50/50 dark:hover:bg-gray-600/50 transition-colors duration-150 group">
       <div className="flex items-center justify-between">
         <div className="flex-1 min-w-0">
           {/* Description */}
-          <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate">
+          <p className="text-xs sm:text-sm font-semibold text-gray-900 dark:text-gray-100 truncate">
             {transaction.description}
           </p>
 
           {/* Category and Date */}
-          <div className="flex items-center mt-2 space-x-3">
+          <div className="flex items-center mt-1.5 sm:mt-2 space-x-2 sm:space-x-3 flex-wrap">
             {category && (
               <div className="flex items-center">
                 <span
-                  className="w-2.5 h-2.5 rounded-full mr-2 shadow-sm"
+                  className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full mr-1.5 sm:mr-2 shadow-sm"
                   style={{ backgroundColor: category.color }}
                   aria-hidden="true"
                 />
@@ -68,10 +68,10 @@ const TransactionItem = ({ transaction, category, onEdit, onDelete }) => {
         </div>
 
         {/* Amount and Actions */}
-        <div className="flex items-center space-x-4 ml-4">
+        <div className="flex items-center space-x-2 sm:space-x-4 ml-2 sm:ml-4 flex-shrink-0">
           {/* Amount */}
           <p
-            className={`text-sm font-bold ${
+            className={`text-xs sm:text-sm font-bold whitespace-nowrap ${
               isIncome ? 'text-success-500' : 'text-error-400'
             }`}
           >
@@ -80,20 +80,20 @@ const TransactionItem = ({ transaction, category, onEdit, onDelete }) => {
           </p>
 
           {/* Action Buttons - Enterprise styling */}
-          <div className="flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          <div className="flex items-center space-x-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
             <button
               onClick={() => onEdit(transaction)}
-              className="p-2 text-gray-400 hover:text-primary-800 hover:bg-primary-50 rounded-lg transition-all duration-200"
+              className="p-1.5 sm:p-2 text-gray-400 touch-manipulation hover:text-primary-800 hover:bg-primary-50 rounded-lg transition-all duration-200"
               aria-label={`Edit ${transaction.description}`}
             >
-              <Edit2 className="h-4 w-4" />
+              <Edit2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </button>
             <button
               onClick={() => onDelete(transaction.id)}
-              className="p-2 text-gray-400 hover:text-error-400 hover:bg-error-50 rounded-lg transition-all duration-200"
+              className="p-1.5 sm:p-2 text-gray-400 touch-manipulation hover:text-error-400 hover:bg-error-50 rounded-lg transition-all duration-200"
               aria-label={`Delete ${transaction.description}`}
             >
-              <Trash2 className="h-4 w-4" />
+              <Trash2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </button>
           </div>
         </div>

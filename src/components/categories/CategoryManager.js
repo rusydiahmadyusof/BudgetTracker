@@ -107,18 +107,18 @@ const CategoryManager = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
       {/* Page Header - Enterprise styling */}
-      <div className="mb-8 flex items-center justify-between">
+      <div className="mb-4 sm:mb-6 lg:mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 tracking-tight">Categories</h1>
-          <p className="mt-2 text-sm font-medium text-gray-500 dark:text-gray-400">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 tracking-tight">Categories</h1>
+          <p className="mt-1 sm:mt-2 text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
             Organize your expenses with categories
           </p>
         </div>
         <button
           onClick={handleAdd}
-          className="px-4 py-2.5 bg-primary-800 dark:bg-primary-dark text-white rounded-lg font-semibold hover:bg-primary-900 dark:hover:bg-primary-dark/90 focus:outline-none focus:ring-2 focus:ring-primary-800 dark:focus:ring-primary-dark focus:ring-offset-2 transition-all duration-200 shadow-sm hover:shadow-md"
+          className="px-3 sm:px-4 py-2 sm:py-2.5 bg-primary-800 text-sm sm:text-base w-full sm:w-auto touch-manipulation dark:bg-primary-dark text-white rounded-lg font-semibold hover:bg-primary-900 dark:hover:bg-primary-dark/90 focus:outline-none focus:ring-2 focus:ring-primary-800 dark:focus:ring-primary-dark focus:ring-offset-2 transition-all duration-200 shadow-sm hover:shadow-md"
         >
           Add Category
         </button>
