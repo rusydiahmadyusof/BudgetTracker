@@ -56,22 +56,22 @@ const Dashboard = () => {
   const balance = calculateBalance(transactions, startOfMonth, endOfMonth)
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
       {/* Page Title - Enterprise styling */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 tracking-tight">Dashboard</h1>
-        <p className="mt-2 text-sm font-medium text-gray-500 dark:text-gray-400">
+      <div className="mb-4 sm:mb-6 lg:mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 tracking-tight">Dashboard</h1>
+        <p className="mt-1 sm:mt-2 text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
           Overview of your finances
         </p>
       </div>
 
       {/* Spending Chart with Daily/Weekly/Monthly Views - Above Summary Cards */}
-      <div className="mb-8">
+      <div className="mb-4 sm:mb-6 lg:mb-8">
         <SpendingChart />
       </div>
 
       {/* Summary Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-4 sm:mb-6 lg:mb-8">
         <SummaryCard
           title="Total Income"
           amount={totalIncome}
@@ -93,13 +93,13 @@ const Dashboard = () => {
       </div>
 
       {/* Quick Add and Chart Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-4 sm:mb-6 lg:mb-8">
         <QuickAdd />
         <ExpenseChart />
       </div>
 
       {/* Recent Transactions */}
-      <div className="mb-8">
+      <div className="mb-4 sm:mb-6 lg:mb-8">
         <RecentTransactions limit={10} />
       </div>
     </div>
@@ -107,4 +107,3 @@ const Dashboard = () => {
 }
 
 export default Dashboard
-

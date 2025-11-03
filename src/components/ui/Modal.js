@@ -104,7 +104,7 @@ const Modal = ({
   // Modal content
   const modalContent = (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4"
       onClick={handleBackdropClick}
       role="dialog"
       aria-modal="true"
@@ -125,15 +125,15 @@ const Modal = ({
       >
         {/* Header - Enterprise styling */}
         {title && (
-          <div className="px-6 py-5 border-b border-gray-200/80 dark:border-gray-600/80 bg-gray-50/50 dark:bg-gray-800/50">
-            <h2 id="modal-title" className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+          <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-gray-200/80 dark:border-gray-600/80 bg-gray-50/50 dark:bg-gray-800/50">
+            <h2 id="modal-title" className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-gray-100">
               {title}
             </h2>
           </div>
         )}
 
         {/* Content */}
-        <div className="px-6 py-6">{children}</div>
+        <div className="px-4 sm:px-6 py-4 sm:py-6">{children}</div>
       </div>
     </div>
   )

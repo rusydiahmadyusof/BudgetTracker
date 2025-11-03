@@ -55,7 +55,7 @@ const ClientLayout = ({ children }) => {
       <BudgetProvider>
         <Header />
         <Sidebar />
-        <main className="lg:pl-64 pb-16 lg:pb-0 min-h-screen bg-gray-50 dark:bg-gray-800 transition-colors duration-200">
+        <main className="lg:pl-64 pb-20 sm:pb-16 lg:pb-0 min-h-screen bg-gray-50 dark:bg-gray-800 transition-colors duration-200">
           <div
             className={`transition-all duration-300 ease-in-out ${
               isTransitioning 

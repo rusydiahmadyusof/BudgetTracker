@@ -73,8 +73,8 @@ const RecentTransactions = ({ limit = 10 }) => {
 
   return (
     <div className="bg-white dark:bg-gray-700 rounded-xl border border-gray-200/80 dark:border-gray-600/80 shadow-sm">
-      <div className="px-6 py-5 border-b border-gray-200/80 dark:border-gray-600/80 flex items-center justify-between bg-gray-50/50 dark:bg-gray-800/50">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Recent Transactions</h2>
+      <div className="px-4 sm:px-3 sm:px-4 lg:px-6 py-3 sm:py-4 sm:py-5 border-b border-gray-200/80 dark:border-gray-600/80 flex items-center justify-between bg-gray-50/50 dark:bg-gray-800/50">
+        <h2 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100">Recent Transactions</h2>
         <Link
           href="/transactions"
           className="text-sm text-primary-800 dark:text-primary-dark hover:text-primary-900 dark:hover:text-primary-dark/80 font-semibold transition-colors duration-200"
@@ -96,7 +96,7 @@ const RecentTransactions = ({ limit = 10 }) => {
           return (
             <div
               key={transaction.id}
-              className="px-6 py-4 hover:bg-gray-50 transition-colors"
+              className="px-3 sm:px-4 lg:px-6 py-3 sm:py-4 hover:bg-gray-50 transition-colors"
             >
               <div className="flex items-center justify-between">
                 <div className="flex-1 min-w-0">
@@ -124,7 +124,7 @@ const RecentTransactions = ({ limit = 10 }) => {
                 </div>
 
                 {/* Amount */}
-                <div className="ml-4">
+                <div className="ml-2 sm:ml-4 flex-shrink-0">
                   <p
                     className={`text-sm font-semibold ${
                       isIncome ? 'text-success-500' : 'text-error-400'
