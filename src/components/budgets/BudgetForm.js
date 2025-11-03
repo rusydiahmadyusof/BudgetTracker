@@ -46,7 +46,7 @@ const BudgetForm = ({
   onClose,
   budget = null,
   onSave,
-  categories,
+  categories = [],
 }) => {
   const { showToast } = useToast()
   const [categoryId, setCategoryId] = useState('')
@@ -54,6 +54,9 @@ const BudgetForm = ({
   const [period, setPeriod] = useState(BUDGET_PERIODS.MONTHLY)
   const [error, setError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  
+  // Ensure categories is always an array
+  const safeCategories = Array.isArray(categories) ? categories : []
 
   // Reset form when modal opens/closes
   useEffect(() => {
@@ -132,7 +135,7 @@ const BudgetForm = ({
                 disabled={!!budget} // Can't change category when editing
               >
             <option value="">Select a category</option>
-            {Array.isArray(categories) && categories.map((category) => (
+            {safeCategories.map((category) => (
               <option key={category.id} value={category.id}>
                 {category.name}
               </option>

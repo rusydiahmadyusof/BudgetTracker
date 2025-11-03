@@ -37,6 +37,7 @@ import * as LucideIcons from 'lucide-react'
  * @param {number} props.spent - Amount spent in this category
  * @param {function} props.onEdit - Edit handler
  * @param {function} props.onDelete - Delete handler
+ * @param {string} props.className - Additional CSS classes
  */
 const BudgetCard = ({
   budget,
@@ -44,6 +45,7 @@ const BudgetCard = ({
   spent,
   onEdit,
   onDelete,
+  className,
 }) => {
   // Calculate progress percentage
   // Can exceed 100% if over budget

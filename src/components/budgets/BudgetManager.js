@@ -91,7 +91,12 @@ const BudgetManager = () => {
   // Handle save (add or update)
   const handleSave = async (budgetData) => {
     try {
-      setBudget(budgetData)
+      // Include budget ID when editing
+      const budgetToSave = editingBudget
+        ? { ...budgetData, id: editingBudget.id }
+        : budgetData
+      
+      setBudget(budgetToSave)
       if (editingBudget) {
         showToast('Budget updated successfully', 'success', { title: 'Success' })
       } else {

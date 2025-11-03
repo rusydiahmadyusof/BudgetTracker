@@ -170,7 +170,7 @@ export const formatDateForInput = (date) => {
  * Get the start of a period (month or week)
  * 
  * @param {Date} date - The date
- * @param {string} period - 'month' or 'week'
+ * @param {string} period - 'month'/'monthly' or 'week'/'weekly'
  * @returns {Date} - Start of the period
  * 
  * Useful for filtering transactions by period
@@ -178,7 +178,8 @@ export const formatDateForInput = (date) => {
 export const getPeriodStart = (date, period = 'month') => {
   const dateObj = typeof date === 'string' ? parseISO(date) : date
 
-  if (period === 'week') {
+  // Handle both 'week'/'weekly' and 'month'/'monthly' formats
+  if (period === 'week' || period === 'weekly') {
     return startOfWeek(dateObj, { weekStartsOn: 1 }) // Monday
   }
   return startOfMonth(dateObj)
@@ -188,13 +189,14 @@ export const getPeriodStart = (date, period = 'month') => {
  * Get the end of a period (month or week)
  * 
  * @param {Date} date - The date
- * @param {string} period - 'month' or 'week'
+ * @param {string} period - 'month'/'monthly' or 'week'/'weekly'
  * @returns {Date} - End of the period
  */
 export const getPeriodEnd = (date, period = 'month') => {
   const dateObj = typeof date === 'string' ? parseISO(date) : date
 
-  if (period === 'week') {
+  // Handle both 'week'/'weekly' and 'month'/'monthly' formats
+  if (period === 'week' || period === 'weekly') {
     return endOfWeek(dateObj, { weekStartsOn: 1 }) // Monday
   }
   return endOfMonth(dateObj)

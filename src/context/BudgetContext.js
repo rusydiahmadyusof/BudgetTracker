@@ -66,6 +66,10 @@ export const BudgetProvider = ({ children }) => {
   // Each budget: { id, categoryId, amount, period: 'monthly'|'weekly' }
   const [budgets, setBudgets] = useState([])
 
+  // Flag to track if initial data has been loaded from localStorage
+  // Prevents saving empty arrays to localStorage before data is loaded
+  const [isInitialized, setIsInitialized] = useState(false)
+
   /**
    * Load initial data from localStorage
    * Runs once when component mounts (client-side only)
@@ -78,6 +82,7 @@ export const BudgetProvider = ({ children }) => {
       setCategories(DEFAULT_CATEGORIES)
       setTransactions([])
       setBudgets([])
+      setIsInitialized(true)
       return
     }
 
@@ -101,45 +106,52 @@ export const BudgetProvider = ({ children }) => {
       // Load budgets from localStorage
       const savedBudgets = getFromStorage(STORAGE_KEYS.BUDGETS)
       setBudgets(Array.isArray(savedBudgets) ? savedBudgets : [])
+
+      // Mark as initialized after loading is complete
+      setIsInitialized(true)
     } catch (error) {
       // If there's an error loading data, initialize with defaults
       console.error('Error loading data from localStorage:', error)
       setCategories(DEFAULT_CATEGORIES)
       setTransactions([])
       setBudgets([])
+      setIsInitialized(true)
     }
   }, []) // Empty dependency array = run once on mount
 
   /**
    * Save transactions to localStorage whenever they change
    * This keeps data persisted across page refreshes (free storage)
+   * Only saves after initial load is complete to prevent overwriting data
    */
   useEffect(() => {
-    // Only save if we're in browser and have data
-    if (typeof window !== 'undefined' && transactions.length >= 0) {
+    // Only save if we're in browser, initialized, and have loaded data
+    if (typeof window !== 'undefined' && isInitialized) {
       saveToStorage(STORAGE_KEYS.TRANSACTIONS, transactions)
     }
-  }, [transactions])
+  }, [transactions, isInitialized])
 
   /**
    * Save categories to localStorage whenever they change
+   * Only saves after initial load is complete to prevent overwriting data
    */
   useEffect(() => {
-    // Only save if we're in browser and have categories
-    if (typeof window !== 'undefined' && categories.length > 0) {
+    // Only save if we're in browser and initialized
+    if (typeof window !== 'undefined' && isInitialized) {
       saveToStorage(STORAGE_KEYS.CATEGORIES, categories)
     }
-  }, [categories])
+  }, [categories, isInitialized])
 
   /**
    * Save budgets to localStorage whenever they change
+   * Only saves after initial load is complete to prevent overwriting data
    */
   useEffect(() => {
-    // Only save if we're in browser
-    if (typeof window !== 'undefined') {
+    // Only save if we're in browser and initialized
+    if (typeof window !== 'undefined' && isInitialized) {
       saveToStorage(STORAGE_KEYS.BUDGETS, budgets)
     }
-  }, [budgets])
+  }, [budgets, isInitialized])
 
   /**
    * Add a new transaction
@@ -242,11 +254,25 @@ export const BudgetProvider = ({ children }) => {
   /**
    * Add or update a budget
    * 
-   * @param {Object} budget - Budget object
+   * @param {Object} budget - Budget object (may include id for updates)
    * @returns {string} - ID of created/updated budget
    */
   const setBudget = useCallback((budget) => {
-    // Check if budget already exists for this category and period
+    // If budget has an ID, it's an update operation
+    if (budget.id) {
+      const existingBudget = budgets.find((b) => b.id === budget.id)
+      if (existingBudget) {
+        // Update existing budget by ID
+        setBudgets((prev) =>
+          prev.map((b) =>
+            b.id === budget.id ? { ...b, ...budget } : b
+          )
+        )
+        return budget.id
+      }
+    }
+
+    // Check if budget already exists for this category and period (for new budgets)
     const existingBudget = budgets.find(
       (b) => b.categoryId === budget.categoryId && b.period === budget.period
     )

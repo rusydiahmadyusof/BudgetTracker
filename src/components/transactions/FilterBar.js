@@ -29,7 +29,7 @@
 
 'use client';
 
-import { useDebounce } from '../../hooks/useDebounce';
+import { useMemo, useCallback, memo } from 'react';
 import {
   startOfWeek,
   startOfMonth,
@@ -45,10 +45,16 @@ import { TRANSACTION_TYPES } from '../../utils/constants';
  * Filter bar component for transactions
  *
  * Features:
- * - Search input (debounced)
+ * - Search input (debouncing handled by parent component)
  * - Category filter dropdown
  * - Type filter (All/Income/Expense)
  * - Date range filter (from/to)
+ * - Quick date preset filters
+ *
+ * Performance optimizations:
+ * - React.memo: Prevents re-renders when props haven't changed
+ * - useMemo: Memoizes category options and filter state checks
+ * - useCallback: Stabilizes event handlers to prevent child re-renders
  */
 const FilterBar = ({
   searchTerm,
@@ -63,48 +69,80 @@ const FilterBar = ({
   onDateToChange,
   categories,
 }) => {
-  // Debounce search term to avoid excessive filtering
-  // This improves performance by reducing filter operations
-  const debouncedSearchTerm = useDebounce(searchTerm, 300);
+  // Memoize category options to prevent re-rendering on every parent update
+  const categoryOptions = useMemo(() => {
+    if (!Array.isArray(categories)) return null;
+    return categories.map((category) => (
+      <option
+        key={category.id}
+        value={category.id}
+      >
+        {category.name}
+      </option>
+    ));
+  }, [categories]);
 
-  // Date preset handlers
-  const applyDatePreset = (preset) => {
-    const today = new Date();
-    let fromDate = '';
-    let toDate = format(today, 'yyyy-MM-dd');
+  // Memoize date preset handler - only creates new function when dependencies change
+  const applyDatePreset = useCallback(
+    (preset) => {
+      const today = new Date();
+      let fromDate = '';
+      let toDate = format(today, 'yyyy-MM-dd');
 
-    switch (preset) {
-      case 'today':
-        fromDate = format(today, 'yyyy-MM-dd');
-        break;
-      case 'thisWeek':
-        fromDate = format(
-          startOfWeek(today, { weekStartsOn: 1 }),
-          'yyyy-MM-dd'
-        );
-        break;
-      case 'thisMonth':
-        fromDate = format(startOfMonth(today), 'yyyy-MM-dd');
-        break;
-      case 'last7Days':
-        fromDate = format(subDays(today, 7), 'yyyy-MM-dd');
-        break;
-      case 'last30Days':
-        fromDate = format(subDays(today, 30), 'yyyy-MM-dd');
-        break;
-      case 'lastMonth':
-        const lastMonthStart = startOfMonth(subMonths(today, 1));
-        const lastMonthEnd = endOfMonth(subMonths(today, 1));
-        fromDate = format(lastMonthStart, 'yyyy-MM-dd');
-        toDate = format(lastMonthEnd, 'yyyy-MM-dd');
-        break;
-      default:
-        return;
-    }
+      switch (preset) {
+        case 'today':
+          fromDate = format(today, 'yyyy-MM-dd');
+          break;
+        case 'thisWeek':
+          fromDate = format(
+            startOfWeek(today, { weekStartsOn: 1 }),
+            'yyyy-MM-dd'
+          );
+          break;
+        case 'thisMonth':
+          fromDate = format(startOfMonth(today), 'yyyy-MM-dd');
+          break;
+        case 'last7Days':
+          fromDate = format(subDays(today, 7), 'yyyy-MM-dd');
+          break;
+        case 'last30Days':
+          fromDate = format(subDays(today, 30), 'yyyy-MM-dd');
+          break;
+        case 'lastMonth':
+          const lastMonthStart = startOfMonth(subMonths(today, 1));
+          const lastMonthEnd = endOfMonth(subMonths(today, 1));
+          fromDate = format(lastMonthStart, 'yyyy-MM-dd');
+          toDate = format(lastMonthEnd, 'yyyy-MM-dd');
+          break;
+        default:
+          return;
+      }
 
-    onDateFromChange(fromDate);
-    onDateToChange(toDate);
-  };
+      onDateFromChange(fromDate);
+      onDateToChange(toDate);
+    },
+    [onDateFromChange, onDateToChange]
+  );
+
+  // Memoize clear handler to prevent creating new function on every render
+  const handleClear = useCallback(() => {
+    onSearchChange('');
+    onCategoryChange('');
+    onTypeChange('');
+    onDateFromChange('');
+    onDateToChange('');
+  }, [
+    onSearchChange,
+    onCategoryChange,
+    onTypeChange,
+    onDateFromChange,
+    onDateToChange,
+  ]);
+
+  // Memoize the check for showing clear button - avoids recalculating condition
+  const hasActiveFilters = useMemo(() => {
+    return !!(searchTerm || categoryFilter || typeFilter || dateFrom || dateTo);
+  }, [searchTerm, categoryFilter, typeFilter, dateFrom, dateTo]);
 
   return (
     <div className='bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 p-3 sm:p-4 mb-4 sm:mb-6'>
@@ -116,36 +154,42 @@ const FilterBar = ({
         <button
           onClick={() => applyDatePreset('today')}
           className='px-3 py-1 text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors'
+          aria-label='Filter by today'
         >
           Today
         </button>
         <button
           onClick={() => applyDatePreset('thisWeek')}
           className='px-3 py-1 text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors'
+          aria-label='Filter by this week'
         >
           This Week
         </button>
         <button
           onClick={() => applyDatePreset('thisMonth')}
           className='px-3 py-1 text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors'
+          aria-label='Filter by this month'
         >
           This Month
         </button>
         <button
           onClick={() => applyDatePreset('last7Days')}
           className='px-3 py-1 text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors'
+          aria-label='Filter by last 7 days'
         >
           Last 7 Days
         </button>
         <button
           onClick={() => applyDatePreset('last30Days')}
           className='px-3 py-1 text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors'
+          aria-label='Filter by last 30 days'
         >
           Last 30 Days
         </button>
         <button
           onClick={() => applyDatePreset('lastMonth')}
           className='px-3 py-1 text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors'
+          aria-label='Filter by last month'
         >
           Last Month
         </button>
@@ -169,17 +213,10 @@ const FilterBar = ({
             value={categoryFilter}
             onChange={(e) => onCategoryChange(e.target.value)}
             className='w-full px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-800 dark:focus:ring-primary-dark focus:border-primary-800 dark:focus:border-primary-dark'
+            aria-label='Filter by category'
           >
             <option value=''>All Categories</option>
-            {Array.isArray(categories) &&
-              categories.map((category) => (
-                <option
-                  key={category.id}
-                  value={category.id}
-                >
-                  {category.name}
-                </option>
-              ))}
+            {categoryOptions}
           </select>
         </div>
 
@@ -189,6 +226,7 @@ const FilterBar = ({
             value={typeFilter}
             onChange={(e) => onTypeChange(e.target.value)}
             className='w-full px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-800 dark:focus:ring-primary-dark focus:border-primary-800 dark:focus:border-primary-dark'
+            aria-label='Filter by transaction type'
           >
             <option value=''>All Types</option>
             <option value={TRANSACTION_TYPES.INCOME}>Income</option>
@@ -220,20 +258,11 @@ const FilterBar = ({
             className='flex-1'
           />
           {/* Clear filters button */}
-          {(searchTerm ||
-            categoryFilter ||
-            typeFilter ||
-            dateFrom ||
-            dateTo) && (
+          {hasActiveFilters && (
             <button
-              onClick={() => {
-                onSearchChange('');
-                onCategoryChange('');
-                onTypeChange('');
-                onDateFromChange('');
-                onDateToChange('');
-              }}
+              onClick={handleClear}
               className='px-3 sm:px-4 py-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors touch-manipulation'
+              aria-label='Clear all filters'
             >
               Clear
             </button>
@@ -244,4 +273,6 @@ const FilterBar = ({
   );
 };
 
-export default FilterBar;
+// Wrap component with memo to prevent unnecessary re-renders
+// Only re-renders when props actually change
+export default memo(FilterBar);
